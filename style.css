@@ -421,16 +421,10 @@ header.top {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: url('cafe.png');
-    background-repeat: no-repeat;
-    background-position: bottom center;
-    background-size: contain;
-    opacity: 0.9;
-    pointer-events: none;
-    z-index: 0;
+
 }
 
-.cup-panel > * {
+.cup-panel>* {
     position: relative;
     z-index: 1;
 }
