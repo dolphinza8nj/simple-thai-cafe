@@ -37,7 +37,7 @@
       { value: 'Here', thai: 'ทานที่นี่', romanization: 'tāan-tîi-nîi' },
       { value: 'Take away', thai: 'กลับบ้าน', romanization: 'glàp-bâan' }
     ]},
-    { key: 'ice', en: 'Would you like lots of ice in that?', thai: 'เอาใส่น้ำแข็งเยอะไหมคะ', roman: 'āo sài náam-kěng yóe mǎi ká',
+    { key: 'ice', en: 'Would you like lots of ice in that?', thai: 'เอาน้ำแข็งเยอะไหมคะ', roman: 'āo náam-kěng yóe mǎi ká',
       showIf: function (s) { return s.temp !== 'Hot'; },
       options: [
         { value: 'Less ice', thai: 'น้ำแข็งน้อย', romanization: 'nám-kǎeng-nói', cubes: 1 },
