@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Thai Cafe</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="top">
+        <div class="brand">
+          <h1 style="color: hotpink">Simple Thai Cafe</h1>
+          <span class="thai" style="color: rgb(240, 177, 208); size: 60px"
+            >ฝึกสั่งเครื่องดื่มเป็นภาษาไทย — practice ordering in Thai</span
+          >
+        </div>
+        <button class="restart" id="restartBtn" type="button">สั่งใหม่</button>
+      </header>
+
+      <div class="layout">
+        <div class="wizard" id="wizard"><!-- filled by JS --></div>
+
+        <div class="cup-panel">
+          <svg
+            class="cup-figure"
+            id="cupSvg"
+            viewBox="-30 -70 260 400"
+            role="img"
+            aria-label="Drink preview"
+          >
+            <defs>
+              <clipPath id="cupClip">
+                <path
+                  d="M44,52 C41,122 48,214 57,274 Q100,287 143,274 C152,214 159,122 156,52 Z"
+                />
+              </clipPath>
+              <linearGradient id="cupGrad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#ffffff" stop-opacity="0.55" />
+                <stop offset="0.5" stop-color="#ffffff" stop-opacity="0.15" />
+                <stop offset="1" stop-color="#ffffff" stop-opacity="0.4" />
+              </linearGradient>
+              <linearGradient id="liquidGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop id="liquidStopTop" offset="0" stop-color="#d8d2bd" />
+                <stop id="liquidStopBottom" offset="1" stop-color="#c9c2ab" />
+              </linearGradient>
+              <linearGradient id="iceGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#ffffff" stop-opacity="0.95" />
+                <stop offset="1" stop-color="#cfe6f7" stop-opacity="0.8" />
+              </linearGradient>
+              <filter
+                id="steamBlur"
+                x="-50%"
+                y="-50%"
+                width="200%"
+                height="200%"
+              >
+                <feGaussianBlur stdDeviation="1.1" />
+              </filter>
+              <filter
+                id="groundBlur"
+                x="-50%"
+                y="-50%"
+                width="200%"
+                height="200%"
+              >
+                <feGaussianBlur stdDeviation="4" />
+              </filter>
+            </defs>
+
+            <!-- grounding shadow -->
+            <ellipse
+              cx="100"
+              cy="290"
+              rx="68"
+              ry="9"
+              fill="var(--shadow)"
+              filter="url(#groundBlur)"
+            />
+
+            <!-- steam (hot only) -->
+            <g
+              class="steam-group hidden-part"
+              id="steamGroup"
+              filter="url(#steamBlur)"
+            >
+              <path
+                class="steam-wisp"
+                d="M78,16 C68,4 92,-4 82,-18"
+                fill="none"
+                stroke="var(--ink-soft)"
+                stroke-width="4"
+                stroke-linecap="round"
+              />
+              <path
+                class="steam-wisp"
+                d="M100,16 C90,4 114,-4 104,-20"
+                fill="none"
+                stroke="var(--ink-soft)"
+                stroke-width="4"
+                stroke-linecap="round"
+              />
+              <path
+                class="steam-wisp"
+                d="M122,16 C112,4 136,-4 126,-18"
+                fill="none"
+                stroke="var(--ink-soft)"
+                stroke-width="4"
+                stroke-linecap="round"
+              />
+            </g>
+
+            <!-- cup body: tapered, curved sides, rounded base.
+             No trailing Z — fill still auto-closes across the top, but the stroke
+             no longer draws that closing segment as a seam through the opening. -->
+            <path
+              id="cupBody"
+              d="M38,44 C34,118 42,216 52,278 Q100,292 148,278 C158,216 166,118 162,44"
+              fill="var(--surface)"
+              stroke="var(--ink)"
+              stroke-width="4"
+            />
+            <path
+              d="M38,44 C34,118 42,216 52,278 Q100,292 148,278 C158,216 166,118 162,44"
+              fill="url(#cupGrad)"
+            />
+
+            <!-- rim base shading: the body path only starts at y=44 (the rim's center),
+             so without this the top half of the rim ellipse would show bare page
+             background instead of the cup's shading. Drawn UNDER the liquid, so a
+             full cup still shows liquid color right up to the lip, not this gray. -->
+            <ellipse cx="100" cy="44" rx="62" ry="12" fill="var(--surface)" />
+            <ellipse cx="100" cy="44" rx="62" ry="12" fill="url(#cupGrad)" />
+
+            <!-- liquid + bubbles, clipped to cup interior -->
+            <g clip-path="url(#cupClip)">
+              <rect
+                class="liquid-rect"
+                id="liquidRect"
+                x="40"
+                y="274"
+                width="120"
+                height="0"
+                fill="url(#liquidGrad)"
+              />
+              <g class="bubble-group hidden-part" id="bubbleGroup">
+                <circle
+                  class="bubble"
+                  cx="74"
+                  cy="250"
+                  r="3"
+                  fill="#ffffff"
+                  opacity="0"
+                />
+                <circle
+                  class="bubble"
+                  cx="96"
+                  cy="262"
+                  r="2.2"
+                  fill="#ffffff"
+                  opacity="0"
+                />
+                <circle
+                  class="bubble"
+                  cx="116"
+                  cy="240"
+                  r="2.6"
+                  fill="#ffffff"
+                  opacity="0"
+                />
+                <circle
+                  class="bubble"
+                  cx="86"
+                  cy="232"
+                  r="2"
+                  fill="#ffffff"
+                  opacity="0"
+                />
+                <circle
+                  class="bubble"
+                  cx="106"
+                  cy="266"
+                  r="3.2"
+                  fill="#ffffff"
+                  opacity="0"
+                />
+              </g>
+            </g>
+
+            <!-- liquid surface highlight (meniscus) -->
+            <ellipse
+              class="liquid-surface hidden-part"
+              id="liquidSurface"
+              cx="100"
+              cy="274"
+              rx="56"
+              ry="6"
+              fill="url(#liquidGrad)"
+              opacity="0.9"
+            />
+
+            <!-- rim edge: drawn last so the outline + a touch of interior shadow always
+             read on top, whether the cup is empty or full -->
+            <ellipse
+              cx="100"
+              cy="44"
+              rx="58"
+              ry="9.5"
+              fill="#000000"
+              opacity="0.1"
+            />
+            <ellipse
+              cx="100"
+              cy="44"
+              rx="62"
+              ry="12"
+              fill="none"
+              stroke="var(--ink)"
+              stroke-width="3.5"
+            />
+
+            <!-- glass highlight streak -->
+            <path
+              d="M52,58 L62,58 L54,266 L44,266 Z"
+              fill="#ffffff"
+              opacity="0.22"
+              clip-path="url(#cupClip)"
+            />
+
+            <!-- condensation (iced / blended only) -->
+            <g id="condensationGroup" class="hidden-part">
+              <ellipse
+                class="droplet"
+                cx="34"
+                cy="130"
+                rx="3"
+                ry="5"
+                fill="#eaf3ff"
+                opacity="0.7"
+              />
+              <ellipse
+                class="droplet"
+                cx="40"
+                cy="170"
+                rx="2.4"
+                ry="4"
+                fill="#eaf3ff"
+                opacity="0.6"
+              />
+              <ellipse
+                class="droplet"
+                cx="166"
+                cy="150"
+                rx="2.8"
+                ry="4.5"
+                fill="#eaf3ff"
+                opacity="0.65"
+              />
+              <ellipse
+                class="droplet"
+                cx="160"
+                cy="200"
+                rx="2.2"
+                ry="3.6"
+                fill="#eaf3ff"
+                opacity="0.55"
+              />
+            </g>
+
+            <!-- ice cubes -->
+            <g id="iceGroup">
+              <g
+                class="ice hidden-part"
+                id="ice1"
+                transform="rotate(-10 82 190)"
+              >
+                <rect
+                  x="72"
+                  y="180"
+                  width="20"
+                  height="20"
+                  rx="3"
+                  fill="url(#iceGrad)"
+                  stroke="#bcd3ea"
+                  stroke-width="1.5"
+                />
+                <line
+                  x1="76"
+                  y1="183"
+                  x2="76"
+                  y2="197"
+                  stroke="#ffffff"
+                  stroke-width="1.5"
+                  opacity="0.8"
+                />
+              </g>
+              <g
+                class="ice hidden-part"
+                id="ice2"
+                transform="rotate(12 108 204)"
+              >
+                <rect
+                  x="99"
+                  y="195"
+                  width="18"
+                  height="18"
+                  rx="3"
+                  fill="url(#iceGrad)"
+                  stroke="#bcd3ea"
+                  stroke-width="1.5"
+                />
+                <line
+                  x1="103"
+                  y1="198"
+                  x2="103"
+                  y2="210"
+                  stroke="#ffffff"
+                  stroke-width="1.5"
+                  opacity="0.8"
+                />
+              </g>
+              <g
+                class="ice hidden-part"
+                id="ice3"
+                transform="rotate(-6 93 220)"
+              >
+                <rect
+                  x="85"
+                  y="212"
+                  width="16"
+                  height="16"
+                  rx="3"
+                  fill="url(#iceGrad)"
+                  stroke="#bcd3ea"
+                  stroke-width="1.5"
+                />
+                <line
+                  x1="88"
+                  y1="215"
+                  x2="88"
+                  y2="225"
+                  stroke="#ffffff"
+                  stroke-width="1.5"
+                  opacity="0.8"
+                />
+              </g>
+            </g>
+
+            <!-- straw (iced / blended only) — long enough to reach the bottom of the cup
+             so it never floats above the liquid, however full the cup currently is -->
+            <g
+              class="straw hidden-part"
+              id="straw"
+              transform="rotate(6 100 60)"
+            >
+              <rect
+                x="95"
+                y="-40"
+                width="11"
+                height="312"
+                rx="5"
+                fill="#e2823a"
+                stroke="var(--ink)"
+                stroke-width="1.5"
+              />
+              <rect
+                x="97.5"
+                y="-38"
+                width="2.5"
+                height="307"
+                rx="1.2"
+                fill="#ffffff"
+                opacity="0.45"
+              />
+            </g>
+
+            <!-- lid (take away only) -->
+            <g class="lid-group hidden-part" id="lidGroup">
+              <path
+                d="M34,46 C34,18 166,18 166,46 Z"
+                fill="var(--paper)"
+                stroke="var(--paper-line)"
+                stroke-width="2.5"
+              />
+              <rect
+                x="28"
+                y="42"
+                width="144"
+                height="11"
+                rx="5.5"
+                fill="var(--paper)"
+                stroke="var(--paper-line)"
+                stroke-width="2.5"
+              />
+              <circle cx="100" cy="30" r="6" fill="var(--ink)" opacity="0.22" />
+            </g>
+
+            <!-- sleeve (take away only) -->
+            <path
+              class="sleeve hidden-part"
+              id="sleeve"
+              d="M36,142 C35,168 37,192 41,208 L159,208 C163,192 165,168 164,142 Z"
+              fill="var(--paper)"
+              stroke="var(--paper-line)"
+              stroke-width="2"
+              opacity="0.92"
+            />
+          </svg>
+          <div
+            class="cup-caption"
+            id="cupCaption"
+            style="
+              color: rgb(242, 169, 86);
+              font-size: 30px;
+              font-family:
+                &quot;Gill Sans&quot;, &quot;Gill Sans MT&quot;, Calibri,
+                &quot;Trebuchet MS&quot;, sans-serif;
+            "
+          >
+            your drink will fill up as you answer
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
