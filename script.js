@@ -48,7 +48,7 @@
       { value: 'Can change', thai: 'เปลี่ยนได้', romanization: 'bplìian-dâi' },
       { value: 'Cannot change', thai: 'เปลี่ยนไม่ได้', romanization: 'bplìian mâi dâi' }
     ]},
-    { key: 'milk', en: 'What kind of milk would you like?', thai: 'นมอะไรดีคะ', roman: 'nōm à-rāi dīi ká',
+    { key: 'milk', en: 'What kind of milk should we switch it to?', thai: 'เปลี่ยนเป็นนมอะไรดีคะ', roman: 'bplìian bpēn nōm à-rāi dīi ká',
       showIf: function (s) { return s.milkChange === 'Can change'; },
       options: [
         { value: 'Milk', thai: 'นม', en: 'Regular milk', romanization: 'nōm', price: 0 },
