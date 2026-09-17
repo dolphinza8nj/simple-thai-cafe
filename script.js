@@ -7,7 +7,7 @@
       { value: 'ชามะนาว', thai: 'ชามะนาว', en: 'Lime tea', romanization: 'chāa-má-nāao', color: '#c9a13a', price: 45 },
       { value: 'ชานม', thai: 'ชานม', en: 'Milk tea', romanization: 'chāa-nōm', color: '#c99a6c', price: 55 },
       { value: 'น้ำส้ม', thai: 'น้ำส้ม', en: 'Orange juice', romanization: 'nám-sôm', color: '#f2a33e', price: 50 },
-      { value: 'น้ำเปล่า', thai: 'น้ำเปล่า', en: 'Water', romanization: 'nám-bplào', color: '#ffffff', price: 10 }
+      { value: 'โกโก้', thai: 'โกโก้', en: 'Cocoa', romanization: 'gōo-gôo', color: '#453f3f', price: 10 }
     ]},
     { key: 'qty', en: 'How many do you want?', thai: 'รับกี่แก้วคะ', roman: 'ráp gìi gâaew ká', options: [
       { value: '1', thai: 'หนึ่ง', romanization: 'nèung' },
