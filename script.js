@@ -9,7 +9,7 @@
       { value: 'น้ำส้ม', thai: 'น้ำส้ม', en: 'Orange juice', romanization: 'nám-sôm', color: '#f2a33e', price: 50 },
       { value: 'โกโก้', thai: 'โกโก้', en: 'Cocoa', romanization: 'gōo-gôo', color: '#453f3f', price: 10 }
     ]},
-    { key: 'qty', en: 'How many do you want?', thai: 'รับกี่แก้วคะ', roman: 'ráp gìi gâaew ká', options: [
+    { key: 'qty', en: 'How many do you want?', thai: 'รับกี่แก้วคะ / เอากี่แก้วคะ', roman: 'ráp gìi gâaew ká/ āo gìi gâew ká', options: [
       { value: '1', thai: 'หนึ่ง', romanization: 'nèung' },
       { value: '2', thai: 'สอง', romanization: 'sǎwng' },
       { value: '3', thai: 'สาม', romanization: 'sǎam' },
@@ -281,7 +281,7 @@
         '</div>';
     });
     html += '</div>';
-    html += '<div class="review-total"><span class="label">Total</span><span class="amount">฿' + total() + '</span></div>';
+    html += '<div class="review-total"><span class="label">ราคาทั้งหมด</span><span class="amount">฿' + total() + '</span></div>';
     html += '<div class="nav-row">';
     html += '<button type="button" class="nav-btn" id="backBtn">Back</button>';
     html += '<button type="button" class="nav-btn primary" id="placeBtn">Place order</button>';

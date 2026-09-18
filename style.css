@@ -172,8 +172,8 @@ header.top {
 }
 
 .q-eng {
-    font-size: 14px;
-    color: var(--matcha-ink);
+    font-size: 30px;
+    color: #ecc30b;
     margin: 0 0 4px;
 }
 
@@ -186,10 +186,10 @@ header.top {
 }
 
 .q-roman {
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: Arial, Helvetica, sans-serif;
     font-style: italic;
-    font-size: 13px;
-    color: var(--ink-soft);
+    font-size: 30px;
+    color: rgb(223, 138, 11);
     margin: 0 0 18px;
 }
 
@@ -226,14 +226,14 @@ header.top {
 }
 
 .opt-btn .label {
-    font-size: 15px;
+    font-size: 20px;
     font-weight: 600;
 }
 
 .opt-btn .romanization {
     font-family: 'IBM Plex Mono', monospace;
     font-style: italic;
-    font-size: 15px;
+    font-size: 25px;
     color: rgb(223, 138, 11);
 }
 
@@ -312,7 +312,7 @@ header.top {
     justify-content: space-between;
     align-items: baseline;
     gap: 10px;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .review-line .k {
@@ -327,13 +327,15 @@ header.top {
 .review-line .v-roman {
     font-family: 'IBM Plex Mono', monospace;
     font-style: italic;
-    font-weight: 400;
-    font-size: 11.5px;
-    color: var(--ink-soft);
+    font-weight: bold;
+    font-size: 20px;
+    color: goldenrod;
 }
 
 .review-line-en {
     font-size: 12px;
+
+
 }
 
 .review-line-en .k,
@@ -415,7 +417,7 @@ header.top {
     gap: 10px;
     min-height: 320px;
     justify-content: center;
-    padding-bottom: 24px;
+    padding-bottom: 2px;
 }
 
 .cup-panel::before {
